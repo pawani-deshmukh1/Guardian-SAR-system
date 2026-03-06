@@ -4,58 +4,61 @@ import TacticalMap from "./components/TacticalMap";
 import AlertsPanel from "./components/AlertsPanel";
 import ControlPanel from "./components/ControlPanel";
 import AITerminal from "./components/AITerminal";
-import PersonsList from "./components/PersonsList";
 import "./dashboard.css";
 
 export default function Dashboard() {
 
-  const [safety,setSafety] = useState("SAFE");
+const [safety,setSafety] = useState("SAFE");
 
-  return (
+return(
 
-    <div className="container">
+<div className="container">
 
-      <div className="topbar">
+<div className="topbar">
 
-        🚁 GUARDIAN EYE — SAR COMMAND CENTER
+🚁 GUARDIAN EYE — SAR COMMAND CENTER
 
-        <span className={`status ${safety.toLowerCase()}`}>
-          {safety}
-        </span>
+<span className={`status ${safety.toLowerCase()}`}>
+{safety}
+</span>
 
-        <span className="system">
-          AI ACTIVE | YOLOv8 | MiDaS | BoT-SORT
-        </span>
+<span className="system">
+AI ACTIVE | YOLOv8 | MiDaS | BoT-SORT
+</span>
 
-      </div>
+</div>
 
-      <div className="main">
+<div className="main">
 
-        {/* LEFT */}
-        <div className="left-panel">
-          <ControlPanel/>
-          <AlertsPanel setSafety={setSafety}/>
-        </div>
+{/* LEFT PANEL */}
+<div className="left-panel">
 
-        {/* CENTER */}
-        <div className="center-panel">
-          <VideoFeeds/>
-          <AITerminal/>
-        </div>
+<ControlPanel/>
 
-        {/* RIGHT */}
-        <div className="right-panel">
-          <TacticalMap/>
-        </div>
-        <div className="right-panel">
-          <TacticalMap />
-          <PersonsList />
-        </div>
+<AlertsPanel setSafety={setSafety}/>
 
-      </div>
+</div>
 
-    </div>
+{/* CENTER PANEL */}
+<div className="center-panel">
 
-  );
+<VideoFeeds/>
+
+<AITerminal/>
+
+</div>
+
+{/* RIGHT PANEL */}
+<div className="right-panel">
+
+<TacticalMap/>
+
+</div>
+
+</div>
+
+</div>
+
+);
 
 }

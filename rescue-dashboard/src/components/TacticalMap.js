@@ -5,27 +5,33 @@ import "leaflet/dist/leaflet.css";
 
 const center = [21.1458, 79.0882]; // Nagpur
 
+/* ---------- Icons ---------- */
+
 const droneIcon = new L.Icon({
-iconUrl: "/icons/drone.svg",
-iconSize: [30,30],
-iconAnchor: [15,15]
+  iconUrl: "/icons/drone.svg",
+  iconSize: [30,30],
+  iconAnchor: [15,15]
 });
 
 const victimIcon = new L.Icon({
-iconUrl: "/icons/victim.svg",
-iconSize: [20,20],
-iconAnchor: [10,10]
+  iconUrl: "/icons/victim.svg",
+  iconSize: [20,20],
+  iconAnchor: [10,10]
 });
 
 const vipIcon = new L.Icon({
-iconUrl: "/icons/vip.svg",
-iconSize: [24,24],
-iconAnchor: [12,12]
+  iconUrl: "/icons/vip.svg",
+  iconSize: [24,24],
+  iconAnchor: [12,12],
+  className: "vip-marker"
 });
 
 export default function TacticalMap(){
 
 const [persons,setPersons] = useState([]);
+const [droneHeading,setDroneHeading] = useState(0);
+
+/* ---------- WebSocket ---------- */
 
 useEffect(()=>{
 
@@ -45,7 +51,8 @@ return ()=>ws.close();
 
 },[]);
 
-const [droneHeading,setDroneHeading] = useState(0);
+
+/* ---------- Drone rotation ---------- */
 
 useEffect(()=>{
 
@@ -59,6 +66,17 @@ return ()=>clearInterval(interval);
 
 },[]);
 
+
+/* ---------- Rotated drone icon ---------- */
+
+const rotatedDrone = L.divIcon({
+html: `<img src="/icons/drone.svg" style="width:30px;height:30px;transform:rotate(${droneHeading}deg);" />`,
+iconSize: [30,30],
+iconAnchor: [15,15],
+className:""
+});
+
+
 return(
 
 <div className="panel">
@@ -69,21 +87,22 @@ return(
 center={center}
 zoom={16}
 style={{height:"300px",width:"100%"}}
-
+zoomControl={false}
 >
 
+{/* Dark map WITHOUT labels */}
+
 <TileLayer
-url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
 attribution="&copy; OpenStreetMap &copy; CARTO"
 subdomains="abcd"
 />
 
 {/* Drone marker */}
 
- <Marker
- position={center}
- icon={droneIcon}
- rotationAngle={droneHeading}
+<Marker
+position={center}
+icon={rotatedDrone}
 />
 
 {/* Persons */}
@@ -94,14 +113,12 @@ const isVIP = p.status === "VIP TARGET ACQUIRED";
 
 const icon = isVIP ? vipIcon : victimIcon;
 
-
 return(
 
- <Marker
- key={p.person_id}
- position={[p.gps_lat,p.gps_lon]}
- icon={icon}
- className={isVIP ? "vip-marker" : ""}
+<Marker
+key={p.person_id}
+position={[p.gps_lat,p.gps_lon]}
+icon={icon}
 />
 
 );

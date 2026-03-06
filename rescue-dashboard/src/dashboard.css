@@ -268,4 +268,13 @@ filter: drop-shadow(0 0 6px red);
 transform-origin:center;
 }
 
+.vip-marker img{
+animation: vipBlink 1s infinite;
+}
+
+@keyframes vipBlink{
+0%{opacity:1;}
+50%{opacity:0.3;}
+100%{opacity:1;}
+}
 
