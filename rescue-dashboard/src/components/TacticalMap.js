@@ -1,70 +1,98 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { useEffect, useState } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
-export default function TacticalMap() {
+const center = [21.1458, 79.0882]; // Nagpur
 
-  const [persons,setPersons] = useState([]);
-  const [lz,setLz] = useState([]);
+const droneIcon = new L.Icon({
+iconUrl: "/icons/drone.svg",
+iconSize: [30,30],
+iconAnchor: [15,15]
+});
 
-  useEffect(()=>{
+const victimIcon = new L.Icon({
+iconUrl: "/icons/victim.svg",
+iconSize: [20,20],
+iconAnchor: [10,10]
+});
 
-    const ws = new WebSocket("ws://localhost:8000/api/stream/ws");
+const vipIcon = new L.Icon({
+iconUrl: "/icons/vip.svg",
+iconSize: [24,24],
+iconAnchor: [12,12]
+});
 
-    ws.onmessage = (event)=>{
+export default function TacticalMap(){
 
-      const data = JSON.parse(event.data);
+const [persons,setPersons] = useState([]);
 
-      setPersons(data.persons || []);
-      setLz(data.landing_zones || []);
+useEffect(()=>{
 
-    };
+const ws = new WebSocket("ws://localhost:8000/api/stream/ws");
 
-    return ()=>ws.close();
+ws.onmessage = (event)=>{
 
-  },[]);
+const data = JSON.parse(event.data);
 
-  return(
+if(data.persons){
+setPersons(data.persons);
+}
 
-    <div className="panel">
+};
 
-      <h3>🗺 Tactical Map</h3>
+return ()=>ws.close();
 
-      <div className="radar-ring"></div>
+},[]);
 
-      <MapContainer
-        center={[21.1458,79.0882]}
-        zoom={13}
-        style={{height:"350px"}}
-      >
+return(
 
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+<div className="panel">
 
-        {persons.map(p=>(
-          <Marker key={p.person_id}
-          position={[p.gps_lat,p.gps_lon]}>
-            <Popup>
-              {p.person_id}<br/>
-              {p.status}
-            </Popup>
-          </Marker>
-        ))}
+<h3>🛰 Tactical Radar</h3>
 
-        {lz.map(zone=>(
-          <Marker key={zone.lz_id}
-          position={[zone.gps_lat,zone.gps_lon]}>
-            <Popup>
-              {zone.lz_id}<br/>
-              Safety: {zone.safety_score}
-            </Popup>
-          </Marker>
-        ))}
+<MapContainer
+center={center}
+zoom={16}
+style={{height:"300px",width:"100%"}}
 
-      </MapContainer>
+>
 
-    </div>
+<TileLayer
+url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+attribution="&copy; OpenStreetMap &copy; CARTO"
+subdomains="abcd"
+/>
 
-  );
+{/* Drone marker */}
+
+<Marker position={center} icon={droneIcon} />
+
+{/* Persons */}
+
+{persons.map((p)=>{
+
+const icon =
+p.status === "VIP TARGET ACQUIRED"
+? vipIcon
+: victimIcon;
+
+return(
+
+<Marker
+key={p.person_id}
+position={[p.gps_lat,p.gps_lon]}
+icon={icon}
+/>
+
+);
+
+})}
+
+</MapContainer>
+
+</div>
+
+);
 
 }

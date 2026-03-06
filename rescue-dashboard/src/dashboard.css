@@ -139,10 +139,11 @@ margin:5px 0;
 background:#000;
 color:#00ff9c;
 font-family:monospace;
+font-size:13px;
 padding:10px;
-height:180px;
-overflow:auto;
-border:1px solid #00ff9c44;
+height:200px;
+overflow-y:auto;
+border:1px solid #00ff9c33;
 }
 
 /* RADAR Sweep animation */
@@ -222,3 +223,12 @@ animation:targetBlink 1s infinite;
 50%{opacity:.3}
 100%{opacity:1}
 }
+
+.leaflet-marker-icon{
+filter: drop-shadow(0 0 4px #00ff9c);
+}
+
+.leaflet-container{
+background:black;
+}
+

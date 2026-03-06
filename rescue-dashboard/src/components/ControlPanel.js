@@ -98,6 +98,14 @@ alert("VIP search failed");
 
 };
 
+const clearTarget = async()=>{
+
+ await axios.post(
+ "http://localhost:8000/api/alerts/clear_vip"
+ );
+
+};
+
 
 /* ---------- Export Mission Report ---------- */
 
@@ -120,6 +128,26 @@ const a = document.createElement("a");
 a.href=url;
 a.download="mission_report.json";
 a.click();
+
+};
+
+/* Scan Hazards */
+
+const scanHazards = async()=>{
+
+ await axios.post(
+ "http://localhost:8000/api/analysis/hazards"
+ );
+
+};
+
+/* Triage Victim */
+
+const triageVictim = async()=>{
+
+ await axios.post(
+ "http://localhost:8000/api/analysis/triage"
+ );
 
 };
 
@@ -159,11 +187,24 @@ Find Target
 </button>
 
 <hr/>
+<button onClick={clearTarget}>
+Clear Target
+</button>
 
 <h3>📄 Mission Control</h3>
 
 <button onClick={exportReport}>
 Export Mission Report
+</button>
+
+ /*-----scan hazards and triage victim button----- */
+ 
+<button onClick={scanHazards}>
+Scan Hazards
+</button>
+
+<button onClick={triageVictim}>
+Triage Victim
 </button>
 
 </div>

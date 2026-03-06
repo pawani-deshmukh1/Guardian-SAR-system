@@ -4,6 +4,7 @@ import TacticalMap from "./components/TacticalMap";
 import AlertsPanel from "./components/AlertsPanel";
 import ControlPanel from "./components/ControlPanel";
 import AITerminal from "./components/AITerminal";
+import PersonsList from "./components/PersonsList";
 import "./dashboard.css";
 
 export default function Dashboard() {
@@ -45,6 +46,10 @@ export default function Dashboard() {
         {/* RIGHT */}
         <div className="right-panel">
           <TacticalMap/>
+        </div>
+        <div className="right-panel">
+          <TacticalMap />
+          <PersonsList />
         </div>
 
       </div>
