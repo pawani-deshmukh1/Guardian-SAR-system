@@ -30,7 +30,6 @@ alert("Failed to change source");
 
 };
 
-
 /* ---------- Upload Video ---------- */
 
 const uploadVideo = async (event) => {
@@ -53,7 +52,8 @@ headers:{
 }
 );
 
-/* IMPORTANT PART */
+/* switch stream to uploaded video */
+
 const sourceForm = new FormData();
 sourceForm.append("source","uploads/" + file.name);
 
@@ -72,7 +72,6 @@ alert("Upload failed");
 }
 
 };
-
 
 /* ---------- VIP Tracker ---------- */
 
@@ -100,12 +99,22 @@ alert("VIP search failed");
 
 const clearTarget = async()=>{
 
- await axios.post(
- "http://localhost:8000/api/alerts/clear_vip"
- );
+try{
+
+await axios.post(
+"http://localhost:8000/api/alerts/clear_vip"
+);
+
+alert("VIP tracker reset");
+
+}catch(err){
+
+console.error(err);
+alert("Reset failed");
+
+}
 
 };
-
 
 /* ---------- Export Mission Report ---------- */
 
@@ -131,26 +140,43 @@ a.click();
 
 };
 
-/* Scan Hazards */
+/* ---------- AI Brain Controls ---------- */
 
 const scanHazards = async()=>{
 
- await axios.post(
- "http://localhost:8000/api/analysis/hazards"
- );
+try{
+
+await axios.post(
+"http://localhost:8000/api/analysis/hazards"
+);
+
+alert("Hazard scan started");
+
+}catch(err){
+
+console.error(err);
+
+}
 
 };
-
-/* Triage Victim */
 
 const triageVictim = async()=>{
 
- await axios.post(
- "http://localhost:8000/api/analysis/triage"
- );
+try{
+
+await axios.post(
+"http://localhost:8000/api/analysis/triage"
+);
+
+alert("AI triage started");
+
+}catch(err){
+
+console.error(err);
+
+}
 
 };
-
 
 /* ---------- UI ---------- */
 
@@ -161,10 +187,10 @@ return(
 <h3>🎥 Video Source</h3>
 
 <button onClick={()=>changeSource("0")}>
-Use Webcam
-</button>
+Use Webcam </button>
 
-<button onClick={()=>changeSource("uploads/demoPS7.mp4")}></button>
+<button onClick={()=>changeSource("uploads/demoPS7.mp4")}>
+Use Demo Video </button>
 
 <input
 type="file"
@@ -186,25 +212,28 @@ onChange={(e)=>setQuery(e.target.value)}
 Find Target
 </button>
 
-<hr/>
 <button onClick={clearTarget}>
 Clear Target
 </button>
 
-<h3>📄 Mission Control</h3>
+<hr/>
 
-<button onClick={exportReport}>
-Export Mission Report
-</button>
+<h3>🤖 AI Controls</h3>
 
- /*-----scan hazards and triage victim button----- */
- 
 <button onClick={scanHazards}>
 Scan Hazards
 </button>
 
 <button onClick={triageVictim}>
 Triage Victim
+</button>
+
+<hr/>
+
+<h3>📄 Mission Control</h3>
+
+<button onClick={exportReport}>
+Export Mission Report
 </button>
 
 </div>

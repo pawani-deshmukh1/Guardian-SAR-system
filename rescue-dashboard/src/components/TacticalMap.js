@@ -45,6 +45,20 @@ return ()=>ws.close();
 
 },[]);
 
+const [droneHeading,setDroneHeading] = useState(0);
+
+useEffect(()=>{
+
+const interval = setInterval(()=>{
+
+setDroneHeading(prev => (prev + 20) % 360);
+
+},2000);
+
+return ()=>clearInterval(interval);
+
+},[]);
+
 return(
 
 <div className="panel">
@@ -66,23 +80,28 @@ subdomains="abcd"
 
 {/* Drone marker */}
 
-<Marker position={center} icon={droneIcon} />
+ <Marker
+ position={center}
+ icon={droneIcon}
+ rotationAngle={droneHeading}
+/>
 
 {/* Persons */}
 
 {persons.map((p)=>{
 
-const icon =
-p.status === "VIP TARGET ACQUIRED"
-? vipIcon
-: victimIcon;
+const isVIP = p.status === "VIP TARGET ACQUIRED";
+
+const icon = isVIP ? vipIcon : victimIcon;
+
 
 return(
 
-<Marker
-key={p.person_id}
-position={[p.gps_lat,p.gps_lon]}
-icon={icon}
+ <Marker
+ key={p.person_id}
+ position={[p.gps_lat,p.gps_lon]}
+ icon={icon}
+ className={isVIP ? "vip-marker" : ""}
 />
 
 );

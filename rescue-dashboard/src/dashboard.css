@@ -232,3 +232,40 @@ filter: drop-shadow(0 0 4px #00ff9c);
 background:black;
 }
 
+.telemetry-table{
+width:100%;
+font-size:12px;
+border-collapse:collapse;
+}
+
+.telemetry-table th,
+.telemetry-table td{
+border:1px solid #00ff9c33;
+padding:4px;
+text-align:center;
+}
+
+.telemetry-table th{
+background:#001a12;
+}
+
+/* VIP BLINKING MARKER */
+
+.vip-marker{
+animation: vipBlink 0.8s infinite;
+filter: drop-shadow(0 0 6px red);
+}
+
+@keyframes vipBlink{
+0%{opacity:1; transform:scale(1);}
+50%{opacity:0.4; transform:scale(1.2);}
+100%{opacity:1; transform:scale(1);}
+}
+
+
+/* Yellow drone arrow rotation*/
+.leaflet-marker-icon{
+transform-origin:center;
+}
+
+
