@@ -121,14 +121,20 @@ Command Center Dashboard
 ## ⚙️ How to Run
 
 ### Backend
+
 cd backend/guardian_eye
+
 pip install -r requirements.txt
+
 uvicorn app.main:app --reload
 
 
 ### Frontend
+
 cd rescue-dashboard
+
 npm install
+
 npm start
 
 
